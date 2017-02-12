@@ -27,7 +27,7 @@ SECRET_KEY = 'r@&a2a=q^z%*!*3j1ug7z^zlnl@0rqw!6h5k4#+5&xr=56^$p0'
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'api.cykrt.me'
+    'your.domain'
 ]
 
 
