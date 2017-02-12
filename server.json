@@ -1,0 +1,16 @@
+{
+    "servers":[
+        {
+            "location": "JP",
+            "url": "https://api.cykrt.me/network/ping/"
+        },
+		{
+			"location": "US",
+			"url": "https://cyapi.enl-s.us/network/ping/"
+		},
+		{
+			"location": "UK",
+			"url": "https://lab.acg.works/cyapi/network/ping/"
+		}
+    ]
+}
