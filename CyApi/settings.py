@@ -15,6 +15,7 @@ import os
 
 # 以下为CyApi使用的配置信息
 LOCATION = 'JP'  # 此API的物理所在地
+HOST_NAME = 'yourdomain'  # 此API的域名/IP
 TIME_OUT = 5  # ping命令的超时时间，单位 秒
 TIMES = 4  # ping次数
 
