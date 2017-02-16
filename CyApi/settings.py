@@ -13,6 +13,11 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 
 
+# 以下为CyApi使用的配置信息
+LOCATION = 'JP'  # 此API的物理所在地
+TIME_OUT = 5  # ping命令的超时时间，单位 秒
+TIMES = 4  # ping次数
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -27,7 +32,7 @@ SECRET_KEY = 'r@&a2a=q^z%*!*3j1ug7z^zlnl@0rqw!6h5k4#+5&xr=56^$p0'
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'your.domain'
+    HOST_NAME
 ]
 
 

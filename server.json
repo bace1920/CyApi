@@ -1,16 +1,6 @@
 {
-    "servers":[
-        {
-            "location": "JP",
-            "url": "https://your.domain/network/ping/"
-        },
-		{
-			"location": "US",
-			"url": "https://your.domain/network/ping/"
-		},
-		{
-			"location": "UK",
-			"url": "https://your.domain/cyapi/network/ping/"
-		}
+    "servers": [
+        "https://domain1/network/ping/",
+        "https://domain2/network/ping/"
     ]
 }

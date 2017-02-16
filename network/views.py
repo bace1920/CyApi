@@ -1,14 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
-from network.netapi import send_distributed_request
+import network.netapi as netapi
 import logging
 import requests
 import threading
 import json
-import subprocess
-import shlex
-import re
 import os
 
 
@@ -18,7 +15,7 @@ logging.basicConfig(
         %(levelname)s %(message)s',
     datefmt='%a, %d %b %Y %H:%M:%S',
     filename='views.log',
-    filemode='a+'
+    filemode='w+'
 )
 
 # define a Handler which writes INFO messages or higher to the sys.stderr
@@ -29,38 +26,18 @@ console.setLevel(logging.DEBUG)
 logger.addHandler(console)
 
 
-# Create your views here.
 def ping(request):
-    print(request.body)
-    result = {}
+    returnString = '233 - 怕是姿势不对噢.'
     if request.method == 'POST':
         r = json.loads(request.body.decode(encoding='utf-8'))
         if('address' in r):
-            times = 4
-            if('times' in r):
-                times = r['times']
-                times = 4
-            pingResult = subprocess.Popen(
-                    ['ping', '-c', str(times), r['address']],
-                    stdout=subprocess.PIPE)
-            grepResult = subprocess.Popen(
-                        shlex.split('grep rtt'), stdin=pingResult.stdout,
-                        stdout=subprocess.PIPE)
-            output, err = grepResult.communicate()
-            data = re.findall("\d+\.\d+", output.decode('utf-8'))
-            result['min'] = float(data[0])
-            result['avg'] = float(data[1])
-            result['max'] = float(data[2])
-            result['mdev'] = float(data[3])
-            result = json.dumps(result, ensure_ascii=False)
-            # print(result)
-            return HttpResponse(result.encode('utf-8'))
+            result = netapi.get_latency_of_address(r['address'], settings.TIMES, settings.TIME_OUT)
+            returnString = json.dumps(result, ensure_ascii=False)
         else:
             logger.info('No address requests recived.')
-            return HttpResponse('233 - 怕是姿势不对噢.'.encode('utf-8'))
     else:
         logger.info('Get request recived.')
-        return HttpResponse('233 - 怕是姿势不对噢.'.encode('utf-8'))
+    return HttpResponse(returnString.encode('utf-8'))
 
 
 def latency(request):
@@ -73,11 +50,11 @@ def latency(request):
         jobs = []
         for server in serverList['servers']:
             t = threading.Thread(
-                target=send_distributed_request,
-                args=(server['url'], address, result, server['location']))
+                target=netapi.send_distributed_ping_request,
+                args=(server, address, result))
             t.start()
             jobs.append(t)
-            logger.debug('    Ping request has been send to ' + server['url'])
+            logger.debug('    Ping request has been send to ' + server)
         for t in jobs:
             t.join()
     return HttpResponse(json.dumps(result, ensure_ascii=False).encode('utf-8'))

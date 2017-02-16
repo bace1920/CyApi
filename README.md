@@ -9,12 +9,13 @@
  - uwsgi
  - Django
  - requests
+ - pexpect
 
 ## 使用
  - 根据提示修改`./server.json`
  - 修改`./CyApi_uwsgi.ini`的`chdir`配置
- - 根据提示修改`./CyApi/settings.py`的`ALLOWED_HOSTS_HOST`配置
- - http服务的`timeout`不应低于10秒
+ - 根据提示修改`./CyApi/settings.py`的`CyApi配置信息`
+ - http服务的`timeout`不应低于6秒
 
 ## ToDo
  - 改为异步处理，不产生处于等待状态的TCP连接
